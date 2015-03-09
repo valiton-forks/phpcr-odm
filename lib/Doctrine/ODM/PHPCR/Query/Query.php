@@ -2,6 +2,7 @@
 
 namespace Doctrine\ODM\PHPCR\Query;
 
+use Doctrine\Common\Util\ClassUtils;
 use PHPCR\Query\QueryInterface;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -26,13 +27,15 @@ class Query
     protected $maxResults;
     protected $documentClass;
     protected $query;
+    protected $locale;
     protected $dm;
 
-    public function __construct(QueryInterface $query, DocumentManager $dm, $primaryAlias = null)
+    public function __construct(QueryInterface $query, DocumentManager $dm, $primaryAlias = null, $locale = null)
     {
         $this->dm = $dm;
         $this->query = $query;
         $this->primaryAlias = $primaryAlias;
+        $this->locale = $locale;
     }
 
     /**
@@ -181,6 +184,12 @@ class Query
                 break;
             case self::HYDRATE_DOCUMENT:
                 $data = $this->dm->getDocumentsByPhpcrQuery($this->query, $this->documentClass, $this->primaryAlias);
+                if (null !== $this->locale) {
+                    foreach ($data as $document) {
+                        $meta = $this->dm->getClassMetadata(ClassUtils::getClass($document));
+                        $this->dm->getUnitOfWork()->doLoadTranslation($document, $meta, $this->locale, true);
+                    }
+                }
                 break;
             default:
                 throw QueryException::hydrationModeNotKnown($this->hydrationMode);
