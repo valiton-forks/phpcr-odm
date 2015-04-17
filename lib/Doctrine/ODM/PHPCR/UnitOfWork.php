@@ -993,7 +993,9 @@ class UnitOfWork
             if ($related instanceof Collection || is_array($related)) {
                 // If its a PersistentCollection initialization is intended! No unwrap!
                 foreach ($related as $relatedDocument) {
-                    $this->doRemove($relatedDocument, $visited);
+                    if (null !== $relatedDocument) {
+                        $this->doRemove($relatedDocument, $visited);
+                    }
                 }
             } elseif ($related !== null) {
                 $this->doRemove($related, $visited);
