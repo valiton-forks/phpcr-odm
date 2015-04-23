@@ -194,7 +194,7 @@ class Query
                 if (null !== $this->locale) {
                     foreach ($data as $document) {
                         $meta = $this->dm->getClassMetadata(ClassUtils::getClass($document));
-                        $this->dm->getUnitOfWork()->doLoadTranslation($document, $meta, $this->locale, true);
+                        $this->dm->getUnitOfWork()->doLoadTranslation($document, $meta, $this->locale, true, true);
                     }
                 }
                 break;
