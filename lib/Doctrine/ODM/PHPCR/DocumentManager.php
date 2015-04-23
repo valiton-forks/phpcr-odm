@@ -603,7 +603,7 @@ class DocumentManager implements ObjectManager
             /** @var $row \PHPCR\Query\RowInterface */
             $ids[] = $row->getPath($primarySelector);
         }
-
+        $ids = array_unique($ids);
         return $this->findMany($className, $ids);
     }
 
