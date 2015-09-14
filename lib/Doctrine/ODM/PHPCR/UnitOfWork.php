@@ -1399,13 +1399,14 @@ class UnitOfWork
                 $originalNames = array_merge($originalNames, array_diff($childNames, $originalNames));
                 if ($originalNames !== $childNames) {
                     $reordering = NodeHelper::calculateOrderBefore($originalNames, $childNames);
-                    if (empty($this->documentChangesets[$oid])) {
-                        $this->documentChangesets[$oid] = array('reorderings' => array($reordering));
-                    } else {
-                        $this->documentChangesets[$oid]['reorderings'][] = $reordering;
+                    if (count($reordering)) {
+                        if (empty($this->documentChangesets[$oid])) {
+                            $this->documentChangesets[$oid] = array('reorderings' => array($reordering));
+                        } else {
+                            $this->documentChangesets[$oid]['reorderings'][] = $reordering;
+                        }
+                        $this->scheduledUpdates[$oid] = $document;
                     }
-
-                    $this->scheduledUpdates[$oid] = $document;
                 } elseif (empty($this->documentChangesets[$oid]['fields'])) {
                     unset($this->documentChangesets[$oid]);
                     unset($this->scheduledUpdates[$oid]);
