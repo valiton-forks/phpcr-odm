@@ -241,7 +241,7 @@ class ConverterPhpcr extends ConverterBase
             $this->columns
         );
 
-        $query = new Query($phpcrQuery, $this->dm, $builder->getPrimaryAlias());
+        $query = new Query($phpcrQuery, $this->dm, $builder->getPrimaryAlias(), $this->locale);
 
         if ($firstResult = $builder->getFirstResult()) {
             $query->setFirstResult($firstResult);

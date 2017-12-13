@@ -25,6 +25,7 @@ class Query
     protected $firstResult;
     protected $maxResults;
     protected $documentClass;
+    protected $locale;
 
     /**
      * @var QueryInterface
@@ -36,11 +37,12 @@ class Query
      */
     protected $dm;
 
-    public function __construct(QueryInterface $query, DocumentManagerInterface $dm, $primaryAlias = null)
+    public function __construct(QueryInterface $query, DocumentManagerInterface $dm, $primaryAlias = null, $locale = null)
     {
         $this->dm = $dm;
         $this->query = $query;
         $this->primaryAlias = $primaryAlias;
+        $this->locale = $locale;
     }
 
     /**
@@ -189,6 +191,12 @@ class Query
                 break;
             case self::HYDRATE_DOCUMENT:
                 $data = $this->dm->getDocumentsByPhpcrQuery($this->query, $this->documentClass, $this->primaryAlias);
+                if (null !== $this->locale) {
+                    foreach ($data as $document) {
+                        $meta = $this->dm->getClassMetadata(ClassUtils::getClass($document));
+                        $this->dm->getUnitOfWork()->doLoadTranslation($document, $meta, $this->locale, true);
+                    }
+                }
                 break;
             default:
                 throw QueryException::hydrationModeNotKnown($this->hydrationMode);
