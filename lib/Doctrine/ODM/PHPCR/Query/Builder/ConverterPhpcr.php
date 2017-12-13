@@ -312,13 +312,15 @@ class ConverterPhpcr extends ConverterBase
             ));
         }
 
+        /* remove check to simply query on an association field with uuid
         if ($classMeta->hasAssociation($field)) {
-            throw new InvalidArgumentException(sprintf(
-                'Cannot use association property "%s" of class "%s" as a dynamic operand.',
-                $field,
-                $classMeta->name
-            ));
+           throw new InvalidArgumentException(sprintf(
+               'Cannot use association property "%s" of class "%s" as a dynamic operand.',
+               $field,
+               $classMeta->name
+           ));
         }
+        */
 
         list($alias, $phpcrProperty) = $this->getPhpcrProperty(
             $alias,
