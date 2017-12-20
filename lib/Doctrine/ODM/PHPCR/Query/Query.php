@@ -5,6 +5,7 @@ namespace Doctrine\ODM\PHPCR\Query;
 use PHPCR\Query\QueryInterface;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Util\ClassUtils;
 
 /**
  * Query
