@@ -339,6 +339,7 @@ class ConverterPhpcr extends ConverterBase
     {
         $value = $node->getValue();
 
+        /* remove setting type of $value, because $meta->getFieldMapping causes problems
         if ($field = $node->getParent()->getChildOfType(AbstractLeafNode::NT_OPERAND_DYNAMIC)) {
             if ($field instanceof OperandDynamicField) {
                 $meta = $this->aliasMetadata[$field->getAlias()];
@@ -361,6 +362,7 @@ class ConverterPhpcr extends ConverterBase
                 }
             }
         }
+        */
 
         $operand = $this->qomf()->literal($value);
 
